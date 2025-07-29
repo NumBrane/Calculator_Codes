@@ -1,0 +1,66 @@
+Define LibPub muller(f_str,x0,x1,x2,tol,max_iter)=
+Prgm
+:Local i,h0,h1,d0,d1,a,b,c,disc,den,disc_val
+:Local x3,fx0,fx1,fx2,fx3,f,tmpstr,sqrtexpr,tmpstr2
+:approx(expr(f_str))→f
+:approx(f|x=x0)→fx0
+:approx(f|x=x1)→fx1
+:approx(f|x=x2)→fx2
+:
+:For i,1,max_iter
+:  x1-x0→h0
+:  x2-x1→h1
+:
+:  If abs(h0)<1.−12 or abs(h1)<1.−12 Then
+:    Disp "points too close together"
+:    Return "error"
+:  EndIf
+:
+:((fx1-fx0)/(h0))→d0
+:((fx2-fx1)/(h1))→d1
+:((d1-d0)/(h0+h1))→a
+:  a→a
+:  a*h1+d1→b
+:  fx2→c
+:
+:abs(approx(b^(2)-4*a*c))^(((1)/(2)))→disc
+:
+:  If abs(b+disc)>abs(b-disc) Then
+:      b+disc→den
+:    Else
+:      b-disc→den
+:    EndIf
+:    If abs(den)<1.−14 Then
+:      Disp "denominator too small"
+:      Return "error"
+:    EndIf
+:    Try
+:       x2-((2*c)/(den))→x3
+:       approx(f|x=x3)→fx3
+:    Else
+:      Disp "undefined x3 or fx3"
+:     Return "error"
+:    EndTry
+:is_valid:=when(x3≠undef and fx3≠undef,true,false)
+:    If is_valid Then
+:      Disp "x3=",x3,"x2=",x2,"fx3=",fx3
+:      If abs(x3-x2)≤tol and abs(fx3)≤tol Then
+:         Disp "converged in ",i,"iterations"
+:         Disp "approx root:",x3
+:         Return x3
+:        EndIf
+:    Else
+:      Disp "non-real result detected"
+:      Return "error"
+:    EndIf
+:    x0:=x1
+:    x1:=x2
+:    x2:=x3
+:    fx0:=fx1
+:    fx1:=fx2
+:    fx2:=fx3
+:EndFor
+:Disp "last approx:"
+:Disp x3
+:Return x3
+:EndPrgm

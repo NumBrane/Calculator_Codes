@@ -1,0 +1,27 @@
+Define LibPub newton_raphson(f,df,x0,tol,maxiter)=
+Func
+:Local x,xnew,iter,error_val,fx,dfx
+:x0→x
+:0→iter
+:tol+1→error_val
+:
+:While error_val>tol and iter<maxiter
+:  expr(f)|x=x→fx
+:  expr(df)|x=x→dfx
+:
+:  If abs(dfx)<1.−14 Then
+:    Return "Error: Zero derivative"
+:  EndIf
+:
+:  x-((fx)/(dfx))→xnew
+:abs(xnew-x)→error_val
+:  xnew→x
+:  iter+1→iter
+:EndWhile
+:
+:If iter≥maxiter Then
+:  Return "Max iterations Reached"
+:Else
+:  Return x
+:EndIf
+:EndFunc

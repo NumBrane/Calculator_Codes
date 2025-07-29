@@ -1,0 +1,28 @@
+Define LibPub rk4(f,a,y0,b,n)=
+Prgm
+:If n≤0 Then
+:  Return "error: n must be positive"
+:EndIf
+:Local i,k1,k2,k3,k4,x,y,h,temp
+:a→x
+:y0→y
+:((b-a)/(n))→h
+:For i,1,n
+:  x→temp
+:  y→temp
+:  expr(f)→k1
+:  x+((h)/(2))→temp
+:  y+((h)/(2))*k1→temp
+:  expr(f)→k2
+:  x+((h)/(2))→temp
+:  y+((h)/(2))*k2→temp
+:  expr(f)→k3
+:  x+h→temp
+:  y+h*k3→temp
+:  expr(f)→k4
+:  y+((h)/(6))*(k1+2*k2+2*k3+k4)→y
+:  x+h→x
+:EndFor
+:Disp "Final: x=",x," y=",y
+:Return approx(y)
+:EndPrgm
